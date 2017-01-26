@@ -1,0 +1,11 @@
+{
+	"rootPage": "http://www.google.fr/",
+	"options" : {
+    	"keywords": ["foot"],
+    	"escapes": [],
+    	"cms": ""
+	},
+	"nbLinks" : 50,
+	"captchaBalise" : "form[action='CaptchaRedirect']",
+	"captcha": "captcha.png"
+}

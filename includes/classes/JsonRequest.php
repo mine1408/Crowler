@@ -24,15 +24,16 @@ class JsonRequest
 
     public $rootPage;
     public $options;
-    public $nbLink;
+    public $nbLinks;
     public $capchaBalise;
     public $capcha;
 
-    public function __construct ($keywords, $excludes, $cms){
+    public function __construct ($keywords, $excludes, $cms,$nbLinks){
         $this->rootPage = 'http://www.google.fr/';
         $this->options = new Options($keywords, $excludes, $cms);
-        $this->capchaBalise = 'form[action="CaptchaRedirect"]';
-        $this->capcha = 'capcha.png';
+        $this->captchaBalise = "form[action='CaptchaRedirect']";
+        $this->captcha = 'capcha.png';
+        $this->nbLinks = $nbLinks;
     }
 
 }
