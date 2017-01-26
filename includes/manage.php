@@ -7,27 +7,20 @@
  */
 
 function getColors(){
-    return ["#009688","#35a79c","#54b2a9","#65c3ba","#83d0c9"];
+    return [
+        ["rgba(0,201,182, 0.8)","rgba(0,201,182, 0.0)"],
+        ["rgba(0,227,205, 0.8)","rgba(0,227,205, 0.0)"],
+        ["rgba(0,176,159, 0.8)","rgba(0,176,159, 0.0)"],
+        ["rgba(0,150,136, 0.8)","rgba(0,150,136, 0.0)"],
+        ["rgba(0,125,113, 0.8)","rgba(0,125,113, 0.0 )"],
+        ["rgba(0,74,67, 0.8)","rgba(0,74,67, 0.0)"],
+        ["rgba(0,99,90, 0.8)","rgba(0,99,90, 0.0)"]
+    ];
 };
 
 function getBalises(){
     return ["title", "meta", "h1", "h2", "h3", "h4", "strong", "page"];
 };
-
-//Not used
-/*function createSVGPath ($keyword)
-{
-    return ("M45.015625," .
-        ((100 - $keyword->header->title )* 2) . ",120.31197227293472," .
-        ((100 - $keyword->header->meta) * 2) . ",195.60831954586945," .
-        ((100 - $keyword->body->h1) * 2) . ",271.11095818119577," .
-        ((100 - $keyword->body->h2) * 2) . ",346.4073054541305," .
-        ((100 - $keyword->body->h3) * 2) . ",421.7036527270652," .
-        ((100 - $keyword->body->h4) * 2) . ",496.9997260914879," .
-        ((100 - $keyword->body->strong) * 2) . ",572.2957984557052," .
-        ((100 - $keyword->body->page) * 2) . ""
-    );
-};*/
 
 function computeBarChart($balises, $keywords){
 
@@ -79,18 +72,6 @@ function computeLineChart($balises, $keywords){
     }
 };
 
-
-function buildStringFromArray ($array){
-    $i = 0;
-    foreach ($array as $a) {
-        if ($i > 0)
-            echo(",");
-
-        echo("\"" . $a . "\"");
-
-        $i++;
-    }
-};
 function buildStringFromMultipleArray ($array){
     $i = 0;
     foreach ($array as $a) {
