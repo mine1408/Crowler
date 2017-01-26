@@ -79,6 +79,7 @@ function computeLineChart($balises, $keywords){
     }
 };
 
+
 function buildStringFromArray ($array){
     $i = 0;
     foreach ($array as $a) {
@@ -90,7 +91,17 @@ function buildStringFromArray ($array){
         $i++;
     }
 };
+function buildStringFromMultipleArray ($array){
+    $i = 0;
+    foreach ($array as $a) {
+        if ($i > 0)
+            echo(",");
 
+        echo("\"" . $a[0] . "\"");
+
+        $i++;
+    }
+};
 function buildStringFromKeywords ($keywords){
     $i = 0;
     foreach ($keywords as $k) {

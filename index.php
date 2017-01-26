@@ -14,98 +14,98 @@ include("includes/classes/WebSite.php");
 
 include("includes/manage.php");
 
-    $keywords = [
-        new Keyword(
-            "couteau",
-            new Body(
-                30.0,   //h1
-                30.0,   //h2
-                10.0,   //h3
-                40.0,   //h4
-                50.0,   //strong
-                10.0    //page
-            ),
-            new Header(
-                40.0,   //title
-                10.0    //metadescription
-            )
+$keywords = [
+    new Keyword(
+        "couteau",
+        new Body(
+            30.0,   //h1
+            30.0,   //h2
+            10.0,   //h3
+            40.0,   //h4
+            50.0,   //strong
+            10.0    //page
         ),
-        new Keyword(
-            "cuisine",
-            new Body(
-                30.0,   //h1
-                40.0,   //h2
-                30.0,   //h3
-                30.0,   //h4
-                30.0,   //strong
-                30.0    //page
-            ),
-            new Header(
-                30.0,   //title
-                30.0    //metadescription
-            )
-        ),
-        new Keyword(
-            "matériel",
-            new Body(
-                10.0,   //h1
-                40.0,   //h2
-                30.0,   //h3
-                30.0,   //h4
-                30.0,   //strong
-                40.0    //page
-            ),
-            new Header(
-                30.0,   //title
-                20.0    //metadescription
-            )
-        ),
-        new Keyword(
-            "poël",
-            new Body(
-                30.0,   //h1
-                40.0,   //h2
-                0.0,   //h3
-                30.0,   //h4
-                0.0,   //strong
-                10.0    //page
-            ),
-            new Header(
-                15.0,   //title
-                5.0    //metadescription
-            )
+        new Header(
+            40.0,   //title
+            10.0    //metadescription
         )
-    ];
-
-    $websites = [
-        new Website(
-            "http://cuisine.com",   //link
-            1,                  //rank
-            $keywords           //keywords
+    ),
+    new Keyword(
+        "cuisine",
+        new Body(
+            30.0,   //h1
+            40.0,   //h2
+            30.0,   //h3
+            30.0,   //h4
+            30.0,   //strong
+            30.0    //page
         ),
-        new Website(
-            "http://materieldecuisine.fr",
-            2,
-            $keywords
-        ),
-        new Website(
-            "http://lesitedescuistos.be",
-            3,
-            $keywords
+        new Header(
+            30.0,   //title
+            30.0    //metadescription
         )
-    ];
+    ),
+    new Keyword(
+        "matériel",
+        new Body(
+            10.0,   //h1
+            40.0,   //h2
+            30.0,   //h3
+            30.0,   //h4
+            30.0,   //strong
+            40.0    //page
+        ),
+        new Header(
+            30.0,   //title
+            20.0    //metadescription
+        )
+    ),
+    new Keyword(
+        "poël",
+        new Body(
+            30.0,   //h1
+            40.0,   //h2
+            0.0,   //h3
+            30.0,   //h4
+            0.0,   //strong
+            10.0    //page
+        ),
+        new Header(
+            15.0,   //title
+            5.0    //metadescription
+        )
+    )
+];
 
-    $result = new Result(
-        $keywords,
-        $websites
-    );
+$websites = [
+    new Website(
+        "http://cuisine.com",   //link
+        1,                  //rank
+        $keywords           //keywords
+    ),
+    new Website(
+        "http://materieldecuisine.fr",
+        2,
+        $keywords
+    ),
+    new Website(
+        "http://lesitedescuistos.be",
+        3,
+        $keywords
+    )
+];
+
+$result = new Result(
+    $keywords,
+    $websites
+);
 
 
 
 
-    $colors = getColors();
+$colors = getColors();
 
-    $balises = getBalises();
+$balises = getBalises();
 
 ?>
 <!DOCTYPE html>
@@ -216,24 +216,24 @@ include("includes/manage.php");
                     </div>
                 </div>
             </div>-->
-                <div class="col-md-3"></div>
-                <div class="col-md-6">
-                    <div id="casperSuccess" class="alert alert-success">
-                        1. Casper script lunched successfully.
-                        <br>2. Casper script began catching data from websites.
-                        <br>3. Treatment of the data.
-                    </div>
-                    <!--<div id="casperInfo" class="alert alert-info">
-                        Casper info.
-                    </div>
-                    <div id="casperWarn" class="alert alert-warning">
-                        Casper warning.
-                    </div>
-                    <div id="casperError" class="alert alert-danger">
-                        Casper error.
-                    </div>-->
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div id="casperSuccess" class="alert alert-success">
+                    1. Casper script lunched successfully.
+                    <br>2. Casper script began catching data from websites.
+                    <br>3. Treatment of the data.
                 </div>
-                <div class="col-md-3"></div>
+                <!--<div id="casperInfo" class="alert alert-info">
+                    Casper info.
+                </div>
+                <div id="casperWarn" class="alert alert-warning">
+                    Casper warning.
+                </div>
+                <div id="casperError" class="alert alert-danger">
+                    Casper error.
+                </div>-->
+            </div>
+            <div class="col-md-3"></div>
         </div>
 
         <div id="presenceOnWebsites" class="row" style="padding-left: 30px; padding-right: 30px;">
@@ -256,19 +256,19 @@ include("includes/manage.php");
                         <div class="col-md-2"></div>
 
                         <div class="col-md-10">
-                <?php
-                    $countkw = count($keywords);
-                    foreach ($keywords as $keyword){
-                ?>
-                        <?php echo  "<div class=\"col-md-2\">" . $keyword->keywordName . "</div>" ?>
+                            <?php
+                            $countkw = count($keywords);
+                            foreach ($keywords as $keyword){
+                                ?>
+                                <?php echo  "<div class=\"col-md-2\">" . $keyword->keywordName . "</div>" ?>
 
-                <?php
-                    }
-                ?>
+                                <?php
+                            }
+                            ?>
+                        </div>
                     </div>
-                </div>
 
-                <?php
+                    <?php
 
                     foreach ($balises as $balise){
                         $baliseString = (string)$balise;
@@ -279,20 +279,20 @@ include("includes/manage.php");
                             <div class="col-md-10">
                                 <?php
 
-                            foreach ($keywords as $keyword) {
-                                if (property_exists("Header", $baliseString)) {
-                                    echo "<div class=\"col-md-2\">" . $keyword->header->{$baliseString} . "</div>";
-                                } else if (property_exists("Body", $baliseString)) {
-                                   echo "<div class=\"col-md-2\">" . $keyword->body->{$baliseString} . "</div>";
-                                } else
-                                    continue;
-                            }
+                                foreach ($keywords as $keyword) {
+                                    if (property_exists("Header", $baliseString)) {
+                                        echo "<div class=\"col-md-2\">" . $keyword->header->{$baliseString} . "</div>";
+                                    } else if (property_exists("Body", $baliseString)) {
+                                        echo "<div class=\"col-md-2\">" . $keyword->body->{$baliseString} . "</div>";
+                                    } else
+                                        continue;
+                                }
                                 ?>
                             </div>
                         </div>
                         <?php
                     }
-                ?>
+                    ?>
 
                 </div>
             </div>
@@ -315,41 +315,41 @@ include("includes/manage.php");
                 // for each element
                 foreach ($websites as $ws) {
 
-                ?>
-                <script>
-                    $(document).ready(function() {
-                    $('#example<?php echo $i; ?>').DataTable( {
-                    data:[<?php constructDataSet($ws, $balises); ?>],
-                    columns: [
-                        { title: "Keywords" },
-                        { title: "h1" },
-                        { title: "h2" },
-                        { title: "h3" },
-                        { title: "h4" },
-                        { title: "Strong" },
-                        { title: "Page" }
-                    ],
-                    paging: true,
-                    searching: false,
-                    lengthMenu: [3, 5, 10, 15],
-                    pageLength: 3,
-                    autoWidth: false
-                    } );
-                } );
-                </script>
-                <div class="ibox" style="margin-bottom: 10px">
-                    <div class="ibox-content ">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3><?php echo $ws->rank ?> : <a href="<?php echo $ws->link ?>"><?php echo $ws->link ?></a></h3>
-                                <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
-                                    <table id="example<?php echo $i;?>" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                    ?>
+                    <script>
+                        $(document).ready(function() {
+                            $('#example<?php echo $i; ?>').DataTable( {
+                                data:[<?php constructDataSet($ws, $balises); ?>],
+                                columns: [
+                                    { title: "Keywords" },
+                                    { title: "h1" },
+                                    { title: "h2" },
+                                    { title: "h3" },
+                                    { title: "h4" },
+                                    { title: "Strong" },
+                                    { title: "Page" }
+                                ],
+                                paging: true,
+                                searching: false,
+                                lengthMenu: [3, 5, 10, 15],
+                                pageLength: 3,
+                                autoWidth: false
+                            } );
+                        } );
+                    </script>
+                    <div class="ibox" style="margin-bottom: 10px">
+                        <div class="ibox-content ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3><?php echo $ws->rank ?> : <a href="<?php echo $ws->link ?>"><?php echo $ws->link ?></a></h3>
+                                    <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                        <table id="example<?php echo $i;?>" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
 
                     <?php
                     $i++;
