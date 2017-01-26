@@ -5,9 +5,12 @@
  * Date: 13/10/2016
  * Time: 09:48
  */
-function __autoload($className){
-    include("includes/classes/".$className.".php");
-}
+
+include("includes/classes/Body.php");
+include("includes/classes/Header.php");
+include("includes/classes/Keyword.php");
+include("includes/classes/Result.php");
+include("includes/classes/WebSite.php");
 
 include("includes/manage.php");
 
@@ -127,9 +130,6 @@ include("includes/manage.php");
     <script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="js/plugins/morris/morris.js"></script>
     <script src="js/plugins/dataTables/datatables.min.js"></script>
-    <script src="js/lodash.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/stopWords.js"></script>
 
 </head>
 <body>
@@ -170,14 +170,14 @@ include("includes/manage.php");
         <div class="col-md-12">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-
+                <form action="index.php" method="post">
                     <div class="input-group">
-                        <input name="keywords" type="text" value="test" class="form-control" placeholder="Tap your keyword(s)" />
+                        <input name="keywords" type="text" class="form-control" placeholder="Tap your keyword(s)" />
                         <span class="input-group-btn">
                             <input name="submit" value="Search" type="submit" class="btn btn-primary">
                         </span>
                     </div>
-
+                </form>
 
                 <?php
 
