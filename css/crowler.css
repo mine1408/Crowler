@@ -1,3 +1,8 @@
 .hiddenField{
     display: none;
 }
+
+
+#casperInfo,#casperSuccess,#casperWarn,#casperError {
+    display: none;
+}

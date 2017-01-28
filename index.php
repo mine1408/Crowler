@@ -135,6 +135,9 @@ $balises = getBalises();
     <script src="js/plugins/dataTables/datatables.min.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="js/customStarter.js"></script>
+    <script src="js/stopWords.js"></script>
+    <script src="js/lodash.js"></script>
+    <script src="js/script.js"></script>
 
 </head>
 <body>
@@ -172,14 +175,14 @@ $balises = getBalises();
         <div class="col-md-12">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <form action="index.php" method="post">
+<!--                <form action="index.php" method="post">-->
                     <div class="input-group">
                         <input name="keywords" type="text" class="form-control" placeholder="Tap your keyword(s)" />
                         <span class="input-group-btn">
                             <input name="submit" value="Search" type="submit" class="btn btn-primary">
                         </span>
                     </div>
-                </form>
+<!--                </form>-->
 
                 <?php
 
@@ -196,7 +199,7 @@ $balises = getBalises();
 
     <div class="row" style="padding-top: 15px; margin-bottom: -20px">
         <div class="row progress progress-striped active">
-            <div style="width: 35%;" class="progress-bar progress-primary">
+            <div style="width: 0;" class="progress-bar progress-primary" id="progressBar">
             </div>
         </div>
     </div>
@@ -223,7 +226,7 @@ $balises = getBalises();
                     <br>2. Casper script began catching data from websites.
                     <br>3. Treatment of the data.
                 </div>
-                <!--<div id="casperInfo" class="alert alert-info">
+                <div id="casperInfo" class="alert alert-info">
                     Casper info.
                 </div>
                 <div id="casperWarn" class="alert alert-warning">
@@ -231,7 +234,7 @@ $balises = getBalises();
                 </div>
                 <div id="casperError" class="alert alert-danger">
                     Casper error.
-                </div>-->
+                </div>
             </div>
             <div class="col-md-3"></div>
         </div>

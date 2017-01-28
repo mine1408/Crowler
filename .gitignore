@@ -1,4 +1,7 @@
 Crowler.iml
-.idea
+.idea/
 casper/result.json
 casper/conf.json
+includes/ajax/result.json
+includes/ajax/structure.js
+includes/tempFiles/

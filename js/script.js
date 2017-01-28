@@ -9,33 +9,58 @@ $(document).ready(function(){
             method:'POST',
             data : {
                 input : $('input[name=keywords]').val()
-            },
-                error: function(){
-                    console.error("error");
-                },
-                success: function(){
-                    getUrls(showResult);
-                }
-        })
+						},
+							beforeSend : function(){
+								addToProgressBar(3);
+								$('#casperSuccess').fadeIn();
+								$('#casperSuccess').text("Script casper launched");
+							},
+							error: function(){
+								console.error("error");
+							},
+							success: function(){
+								addToProgressBar(7);
+								getUrls(showResult);
+								$('#casperSuccess').text("Script casper finished");
+							}
+						})
     });
 });
 
 var sites = [];
+var progressBarWidth = 0;
+
+addToProgressBar(0);
 
 var showResult = function(){
+	$('#casperSuccess').text('Parsing finished');
 	console.log(sites);
+	addToProgressBar(100);
+	$.ajax({
+		url : 'includes/saveSearch.php',
+		method : 'POST',
+		data : {sites : sites,
+			input : $('input[name=keywords]').val()},
+		success : function(data) {
+			$('#casperInfo').fadeIn();
+			$('#casperInfo').text('Search saved into ' + data.files);
+		}
+	})
 };
 
 var getUrls = function(callback){
     $.get(
         'includes/ajax/result.json',
         function(urls){
+        	$('#casperSuccess').text('Running on websites collected...');
             for (var i = 0; i < urls.links.length; i++) {
                 var url = urls.links[i];
                 crawlSite(i,url, function (site) {
                 	sites.push(site);
 									console.log(sites.length,urls.links.length);
+									addToProgressBar(1);
                 	if (sites.length == urls.links.length) {
+                		addToProgressBar(90 - progressBarWidth);
                 		callback();
 									}
 								});
@@ -58,6 +83,7 @@ var crawlSite = function(index,site, callback){
 				index : index
 			} ,
 			success :function(wrote) {
+				addToProgressBar(1);
 				var file = wrote.file;
 				var url = wrote.url;
 				tempSite = {
@@ -144,3 +170,10 @@ function addWords(array,word){
             count : 1
         })
 };
+
+
+function addToProgressBar(value){
+	progressBarWidth = progressBarWidth + value;
+	var newVal = progressBarWidth <= 100 ? progressBarWidth : 100;
+	$('#progressBar').css('width',newVal + '%');
+}
