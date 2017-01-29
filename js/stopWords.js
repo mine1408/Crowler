@@ -68,6 +68,7 @@ var stopWords = [
 	"nommés",
 	"notre",
 	"nous",
+	"nos",
 	"ou",
 	"où",
 	"par",

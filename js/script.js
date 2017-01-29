@@ -50,17 +50,17 @@ var showResult = function(){
 	//Create bar chart
 	computeMorrisBarObjectFromValuableKeywords(sitesFiltered);
 
-	// computeAverageDataTable(sitesFiltered);
+	computeAverageDataTable(sitesFiltered);
 
-	// computeWebSiteDataTable(0, sites[0]);
-	// computeWebSiteDataTable(1, sites[1]);
-	// computeWebSiteDataTable(3, sites[2]);
-	// computeWebSiteDataTable(23, sites[23]);
-	// computeWebSiteDataTable(24, sites[24]);
-	// computeWebSiteDataTable(25, sites[25]);
-	// computeWebSiteDataTable(47, sites[47]);
-	// computeWebSiteDataTable(48, sites[48]);
-	// computeWebSiteDataTable(49, sites[49]);
+	computeWebSiteDataTable(0, sites[0]);
+	computeWebSiteDataTable(1, sites[1]);
+	computeWebSiteDataTable(3, sites[2]);
+	computeWebSiteDataTable(23, sites[23]);
+	computeWebSiteDataTable(24, sites[24]);
+	computeWebSiteDataTable(25, sites[25]);
+	computeWebSiteDataTable(47, sites[47]);
+	computeWebSiteDataTable(48, sites[48]);
+	computeWebSiteDataTable(49, sites[49]);
 
 	console.log(sitesFiltered);
 	$.ajax({
@@ -218,9 +218,7 @@ function resetProgressBar(){
 }
 
 function filterData(data){
-	var result = [];
-
-	result = _.reduce(data,function(res, site){ //each sites
+	var result = _.reduce(data,function(res, site){ //each sites
 		var balises = (site.balises || []);
 
 		for(var i = 0; i < balises.length; i++){ // each balises
@@ -248,14 +246,16 @@ function addToKeywords(array,elem,tag){
 				var tagObj = word.balises[j];
 				if(tagObj.balise == tag){
 					done = true;
-					tagObj.count += elem.count;
+					// tagObj.count += elem.count;
+					tagObj.count ++
 				}
 			}
 			if(!done){
 				done = true;
 				word.balises.push({
 					balise : tag,
-					count : elem.count
+					// count : elem.count
+					count : 1
 				})
 			}
 			break;
@@ -363,42 +363,31 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 		labels: labels
 	});
 }
-/*
+
 function computeWebSiteDataTable(index, website){
 
 	console.log(website);
 
+	if(!website.url) {
+		$("#website"+ index).text((index+1) + " :  Website not reachable" );
+		return;
+	}
+
 	var data = [];
 
-	var allWords = [];
-	for(var b=0; b < website.balises.length; b++){
-		for(var w=0; website.balises[b].words.length; w++){
-			console.log((website.balises[b].words[w]));
-			if(website.balises[b].words[w] && allWords.indexOf(website.balises[b].words[w].word) == -1){
-				allWords.push(website.balises[b].words[w].word);
-			}
+	for (var i = 0; i < website.balises.length; i++) {
+		var tag = website.balises[i];
+		for (var j = 0; j < tag.words.length; j++) {
+			var word = tag.words[j];
+			data = addWord(data,word,i);
 		}
+
 	}
-console.log(allWords);
-	for(var aw= 0; aw < allWords.length; aw++){
-		var tempData = [];
-		tempData.push(allWords[aw]);
-		for(var b1=0; b1 < website.balises.length; b1++){
-			for(var w1=0; website.balises[b1].words.length; w1++){
-				if(website.balises[b1].words[w1].word.indexOf(allWords[aw]) == -1){
-					tempData.push(0);
-				}
-				if(allWords[aw] == website.balises[b1].words[w1].word){
-					tempData.push(website.balises[b1].words[w1].count);
-				}
-			}
-		}
-		data.push(tempData);
-	}
+	
 
 	console.log(data);
 
-$("#website"+ index).text((index+1) + " : <a href=\"" + website.url + "\">"+ website.url +"</a>");
+$("#website"+ index).text((index+1) + " : " + website.url );
 
 	$('#websitekeywords' + index).DataTable({
 		data: data,
@@ -415,9 +404,36 @@ $("#website"+ index).text((index+1) + " : <a href=\"" + website.url + "\">"+ web
 		paging: true,
 		searching: false,
 		lengthMenu: [3, 5, 10, 15],
-		pageLength: 3,
+		pageLength: 5,
 		autoWidth: false
 	});
+
+
+	function addWord(array,word,tag){
+		var done = false;
+		for (var i = 0; i < array.length; i++) {
+			var arrayWord = array[i];
+			if(arrayWord[0] == word.word){
+				done = true;
+				arrayWord[i+1] = word.count;
+			}
+		}
+		if(!done){
+			var obj = {
+				"0" : word.word,
+				"1" : 0,
+				"2" : 0,
+				"3" : 0,
+				"4" : 0,
+				"5" : 0,
+				"6" : 0,
+				"7" : 0
+			};
+			obj[i+1] = word.count;
+			array.push(obj);
+		}
+		return array;
+	}
 }
 
 function computeAverageDataTable(valuableKeywords) {
@@ -428,7 +444,7 @@ function computeAverageDataTable(valuableKeywords) {
 		var tempData = [];
 		tempData.push(valuableKeywords[vk].keyword);
 		for(var b = 0; b < valuableKeywords[vk].balises.length; b++){
-			tempData.push(valuableKeywords[vk].balises[b].count);
+			tempData.push(Math.ceil(valuableKeywords[vk].balises[b].count / 50 * 100) + "%");
 		}
 		data.push(tempData);
 	}
@@ -450,8 +466,7 @@ function computeAverageDataTable(valuableKeywords) {
 		paging: true,
 		searching: false,
 		lengthMenu: [3, 5, 10, 15],
-		pageLength: 3,
+		pageLength: 5,
 		autoWidth: false
 	});
 }
-	*/
