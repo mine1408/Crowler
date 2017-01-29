@@ -42,7 +42,7 @@ var showResult = function(){
 	$.ajax({
 		url : 'includes/saveSearch.php',
 		method : 'POST',
-		data : {sites : sites,
+		data : {sites : sitesFiltered,
 			input : $('input[name=keywords]').val()},
 		success : function(data) {
 			$('#casperInfo').fadeIn();
@@ -224,6 +224,10 @@ function recountWords(data){
 			var keyword = data[tag].keywords[j];
 			addToKeywords(tagObject.keywords,keyword);
 		}
+		tagObject.keywords = _.sortBy(tagObject.keywords,function(value) {
+			return value.count;
+		});
+		tagObject.keywords.reverse();
 		result.push(tagObject);
 	}
 	return result;
