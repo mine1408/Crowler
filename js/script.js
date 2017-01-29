@@ -334,9 +334,9 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 		for(var k = 0; k < valuableKeywords.length; k++){
 			for(var kwb = 0; kwb < valuableKeywords[k].balises.length; kwb++){
 				if(valuableKeywords[k].balises[kwb].balise == tags[b]){
-					data.push(valuableKeywords[k].balises[kwb].count);
+                    dataToAdd.push(valuableKeywords[k].balises[kwb].count);
 					if(ykeys.indexOf(k) == -1){
-						ykeys.push(k)
+						ykeys.push(k);
 					}
 					if(labels.indexOf(valuableKeywords[k].keyword) != -1){
 						labels.push(valuableKeywords[k].keyword);
@@ -345,6 +345,7 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 				}
 			}
 		}
+		data.push(dataToAdd);
 	}
 
 	console.log(data);
@@ -421,7 +422,6 @@ function computeAverageDataTable(valuableKeywords) {
 
 	var data = [];
 
-	//TODO
 	for(var vk = 0; vk < valuableKeywords.length; vk++){
 		var tempData = [];
 		tempData.push(valuableKeywords[vk].keyword);

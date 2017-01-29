@@ -38,7 +38,7 @@ include("includes/manage.php");
     <!--<script src="js/inspinia.js"></script>-->
     <script src="js/plugins/morris/raphael-2.1.0.min.js"></script>
     <script src="js/plugins/morris/morris.js"></script>
-    <script src="js/plugins/chartJs/chart.min.js"></script>
+    <script src="js/plugins/chartJs/Chart.min.js"></script>
     <script src="js/plugins/dataTables/datatables.min.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="js/customStarter.js"></script>
@@ -263,7 +263,7 @@ include("includes/manage.php");
                                 <div class="col-md-12">
                                     <h3 id="website49"></h3>
                                     <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
-                                        <table id="websitekeywords40" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                        <table id="websitekeywords49" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
                                     </div>
                                 </div>
                             </div>
