@@ -6,7 +6,7 @@
  * Time: 16:12
  */
 include "../classes/JsonRequest.php";
-
+include "conf.php";
 $query = $_POST["input"];
 
 $casperConf = new JsonRequest(explode(",",$query),"","",50);
@@ -17,6 +17,6 @@ fclose($fp);
 
 if($writed){
     $res = [];
-    exec("casperjs C:/wamp64/www/Crowler/casper/index.js",$res);
+    exec($CONFIGURATION['casperjsScript'],$res);
     var_dump($res);
 }
