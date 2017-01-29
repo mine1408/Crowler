@@ -334,7 +334,7 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 		for(var k = 0; k < valuableKeywords.length; k++){
 			for(var kwb = 0; kwb < valuableKeywords[k].balises.length; kwb++){
 				if(valuableKeywords[k].balises[kwb].balise == tags[b]){
-                    dataToAdd.push(valuableKeywords[k].balises[kwb].count);
+                    dataToAdd[k] = valuableKeywords[k].balises[kwb].count;
 					if(ykeys.indexOf(k) == -1){
 						ykeys.push(k);
 					}
