@@ -263,8 +263,8 @@ function findValuableKeywordsInDataset(dataset){
 		if(dataset[k1].keyword != ""){
 			var totalOccurrences = 0;
 			//pour les balises d'un keyword
-			for(var b = 0; b < dataset[k1].length; b++){
-				totalOccurrences = totalOccurrences + dataset[k1][b].count;
+			for(var b = 0; b < dataset[k1].balises.length; b++){
+				totalOccurrences = totalOccurrences + dataset[k1].balises[b].count;
 			}
 			if(totalOccurrences > maxValue)
 				maxValue = totalOccurrences;
@@ -288,5 +288,44 @@ function findValuableKeywordsInDataset(dataset){
 		}
 	}
 
-	return valuableKeywordsTotalOccurences;
+	return valuablesKeywords;
+}
+
+
+function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
+
+	var data = [];
+	var ykeys = [];
+	var labels = [];
+
+	for(var b = 0; b < tags.length; b++){
+		var dataToAdd = {};
+		dataToAdd.y = tags[b];
+		for(var k = 0; k < valuableKeywords.length; k++){
+			for(var kwb = 0; kwb < valuableKeywords[k].balises.length: kwb++){
+				if(valuableKeywords[k].balise == tags[b]){
+					dataToAdd[k] = valuableKeywords[k].count;
+					if(ykeys.indexOf(k) == -1){
+						ykeys.push(k)
+					}
+					if(labels.indexOf(valuableKeywords[k].keyword) != -1){
+						labels.push(valuableKeywords[k].keyword;
+					}
+					break;
+				}
+			}
+
+
+		}
+
+	}
+
+	return {
+		element:"bar",
+		barColors:["rgba(0,201,182, 0.8)","rgba(0,227,205, 0.8)","rgba(0,176,159, 0.8)","rgba(0,150,136, 0.8)","rgba(0,125,113, 0.8)","rgba(0,74,67, 0.8)","rgba(0,99,90, 0.8)"],
+		data: data,
+		xkey: 'y',
+		ykeys: ykeys,
+		labels: labels
+	};
 }
