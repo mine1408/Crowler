@@ -3,6 +3,7 @@
  */
 $(document).ready(function(){
     $('input[name=submit]').click(function(){
+    	resetProgressBar();
         $.ajax(
             'includes/ajax/crawler.php',
             {
@@ -36,6 +37,8 @@ var showResult = function(){
 	$('#casperSuccess').text('Parsing finished');
 	console.log(sites);
 	addToProgressBar(100);
+	var sitesFiltered = filterData(sites);
+	console.log(sitesFiltered);
 	$.ajax({
 		url : 'includes/saveSearch.php',
 		method : 'POST',
@@ -70,6 +73,7 @@ var getUrls = function(callback){
     )
 };
 
+var tags = ['h1','h2','h3','strong','title','meta[name=description]','meta[name=keywords]'];
 
 var crawlSite = function(index,site, callback){
     var tempSite = {}, tempBalise = {}, tempWords = {};
@@ -96,13 +100,13 @@ var crawlSite = function(index,site, callback){
 					method: 'GET',
 					success : function(data){
 						var $page = $(data);
-						var balise = ['h1','h2','h3','strong','title','meta[name=description]','meta[name=keywords]'];
-						for(var i = 0;i<balise.length;i++){
+
+						for(var i = 0;i < tags.length;i++){
 							tempBalise = {
-								balise: balise[i],
+								balise: tags[i],
 								words : []
 							};
-							tempWords = $(balise[i],$page);
+							tempWords = $(tags[i],$page);
 							if(tempWords || tempWords.length > 0){
 								for (var j = 0; j < tempWords.length; j++) {
 									var words = deleteStopWords((tempWords[j].innerText || tempWords[j].textContent).split(" "));
@@ -117,7 +121,7 @@ var crawlSite = function(index,site, callback){
 						}
 						callback(tempSite);
 					},
-					complete : function(){
+					error : function(){
 						callback(tempSite);
 					}
 				});
@@ -132,12 +136,16 @@ var crawlSite = function(index,site, callback){
 
 //function
 function deleteStopWords(strings){
-	for (var j = 0; j < crawlSite.length; j++) {
-		var stringToParse = strings[j];
-		if((stringToParse || "").trim() == "") continue;
+	for (var j = 0; j < strings.length; j++) {
+		var stringToParse = (strings[j] || "").trim().toLowerCase();
+
+		if(stringToParse == ""){
+			strings.splice(j,1);
+			continue;
+		}
 
     for (var i = stopWords.length - 1; i >= 0; i--) {
-			if(stringToParse.toLowerCase() == stopWords[i].toLowerCase()){
+			if(stringToParse == stopWords[i].toLowerCase()){
 				strings.splice(j,1);
 			}
     }
@@ -155,25 +163,83 @@ function clone(obj) {
 }
 
 function addWords(array,word){
+		word = word.trim().toLowerCase();
     var incremented = false;
     for (var i = 0; i < array.length; i++) {
         var wordSaved = array[i];
-        if(wordSaved.word.toLowerCase() == word.toLowerCase()) {
+        if(wordSaved.word === word) {
             wordSaved.count++;
             incremented = true;
+						break;
         }
-        break;
     }
     if(!incremented)
         array.push({
-            word : word.toLowerCase(),
+            word : word,
             count : 1
         })
-};
+}
 
 
 function addToProgressBar(value){
 	progressBarWidth = progressBarWidth + value;
 	var newVal = progressBarWidth <= 100 ? progressBarWidth : 100;
 	$('#progressBar').css('width',newVal + '%');
+}
+
+function resetProgressBar(){
+	$('#progressBar').css('width','0');
+}
+
+function filterData(data){
+	var result;
+
+	result = _.reduce(data,function(res, site){ //each sites
+		var balises = (site.balises || []);
+
+		for(var i = 0; i < balises.length; i++){ // each balises
+			var tag = balises[i].balise;
+			var base = {balise:tag,keywords:[]};
+			(res[tag] || (res[tag] = base))
+				.keywords = res[tag].keywords.concat(balises[i].words);
+		}
+
+		return res;
+	},{});
+	result = recountWords(result);
+	console.log(result);
+	return result;
+}
+
+
+function recountWords(data){
+	var result = [];
+	for (var i = 0; i < tags.length; i++) {
+		var tag = tags[i];
+		var tagObject = {
+			balise : tag,
+			keywords : []
+		};
+		for (var j = 0; j < data[tag].keywords.length; j++) {
+			var keyword = data[tag].keywords[j];
+			addToKeywords(tagObject.keywords,keyword);
+		}
+		result.push(tagObject);
+	}
+	return result;
+}
+
+
+function addToKeywords(array,keyword){
+	var done = false;
+	for (var i = 0; i < array.length; i++) {
+		var elem = array[i];
+		if(elem.word == keyword.word){
+			done = true;
+			elem.count += keyword.count	;
+			break;
+		}
+	}
+	if(!done)	array.push(keyword);
+	return array;
 }
