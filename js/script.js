@@ -26,6 +26,12 @@ $(document).ready(function(){
 							}
 						})
     });
+
+    $('input[name=keywords]').keyup(function(e){
+				if(e.which == 13){
+					$('input[name=submit]').click();
+				}
+		});
 });
 
 var sites = [];
@@ -37,23 +43,24 @@ var showResult = function(){
 	$('#casperSuccess').text('Parsing finished');
 	// console.log(sites);
 	addToProgressBar(100);
-	var sitesFiltered = filterData(sites);
+	var sitesFiltered = filterData(sites)
+	console.log(sitesFiltered);
 	sitesFiltered = findValuableKeywordsInDataset(sitesFiltered);
 
 	//Create bar chart
 	computeMorrisBarObjectFromValuableKeywords(sitesFiltered);
 
-	computeAverageDataTable(sitesFiltered);
+	// computeAverageDataTable(sitesFiltered);
 
-	computeWebSiteDataTable(0, sites[0]);
-	computeWebSiteDataTable(1, sites[1]);
-	computeWebSiteDataTable(3, sites[2]);
-	computeWebSiteDataTable(23, sites[23]);
-	computeWebSiteDataTable(24, sites[24]);
-	computeWebSiteDataTable(25, sites[25]);
-	computeWebSiteDataTable(47, sites[47]);
-	computeWebSiteDataTable(48, sites[48]);
-	computeWebSiteDataTable(49, sites[49]);
+	// computeWebSiteDataTable(0, sites[0]);
+	// computeWebSiteDataTable(1, sites[1]);
+	// computeWebSiteDataTable(3, sites[2]);
+	// computeWebSiteDataTable(23, sites[23]);
+	// computeWebSiteDataTable(24, sites[24]);
+	// computeWebSiteDataTable(25, sites[25]);
+	// computeWebSiteDataTable(47, sites[47]);
+	// computeWebSiteDataTable(48, sites[48]);
+	// computeWebSiteDataTable(49, sites[49]);
 
 	console.log(sitesFiltered);
 	$.ajax({
@@ -91,6 +98,13 @@ var getUrls = function(callback){
 };
 
 var tags = ['h1','h2','h3','strong','title','meta[name=description]','meta[name=keywords]'];
+var tagsArray = [];
+for (var i = 0; i < tags.length; i++) {
+	tagsArray.push({
+		balise : tags[i],
+		count : 0
+	});
+}
 
 var crawlSite = function(index,site, callback){
     var tempSite = {}, tempBalise = {}, tempWords = {};
@@ -258,13 +272,9 @@ function addToKeywords(array,elem,tag){
 	if(!done){
 		array.push({
 			keyword : elem.word,
-			balises : [
-				{
-					balise : tag,
-					count : elem.count
-				}
-			]
-		})
+			balises : tagsArray
+		});
+		array = addToKeywords(array,elem,tag);
 	}
 	return array;
 }
@@ -294,11 +304,6 @@ function findValuableKeywordsInDataset(dataset){
 
 	valuableKeywordsTotalOccurences = valuableKeywordsTotalOccurences.slice(0,5);
 
-	// var valuableKeywordsTotalOccurences = $.grep(countByKeywords, function(value, index){
-	// 	//On retourne l'ensemble des valeurs où les occurences sont > à 30% de la leur max
-	// 	return value.occurrences > (maxValue/100)*10;
-	// });
-
 	var valuablesKeywords = [];
 
 	for(var k2 =0; k2 < dataset.length; k2++){
@@ -316,6 +321,9 @@ function findValuableKeywordsInDataset(dataset){
 
 function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 
+	console.log("Morris generation launched");
+
+
 	var data = [];
 	var ykeys = [];
 	var labels = [];
@@ -325,8 +333,8 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 		dataToAdd.y = tags[b];
 		for(var k = 0; k < valuableKeywords.length; k++){
 			for(var kwb = 0; kwb < valuableKeywords[k].balises.length; kwb++){
-				if(valuableKeywords[k].balise[kwb].balise == tags[b]){
-					dataToAdd[k] = valuableKeywords[k].count;
+				if(valuableKeywords[k].balises[kwb].balise == tags[b]){
+					data.push(valuableKeywords[k].balises[kwb].count);
 					if(ykeys.indexOf(k) == -1){
 						ykeys.push(k)
 					}
@@ -352,7 +360,7 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 		labels: labels
 	});
 }
-
+/*
 function computeWebSiteDataTable(index, website){
 
 	console.log(website);
@@ -449,3 +457,4 @@ function computeAverageDataTable(valuableKeywords) {
 		autoWidth: false
 	});
 }
+	*/

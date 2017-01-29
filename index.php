@@ -55,23 +55,12 @@ include("includes/manage.php");
         <div class="col-md-12">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-<!--                <form action="index.php" method="post">-->
                     <div class="input-group">
                         <input name="keywords" type="text" class="form-control" placeholder="Tap your keyword(s)" />
                         <span class="input-group-btn">
                             <input name="submit" value="Search" type="submit" class="btn btn-primary">
                         </span>
                     </div>
-<!--                </form>-->
-
-                <?php
-
-
-                if(isset($_POST['submit'])){
-                    echo($_POST["keywords"]);
-                    //launchSearcher($_POST["keywords"]);
-                }
-                ?>
             </div>
             <div class="col-md-2"></div>
         </div>
