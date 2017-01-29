@@ -32,17 +32,17 @@ exports.module = {
 
 
 //second structure
-var test = {
-	h1 : {
-		balise  :"h1",
-		keywords : [
+var test = [
+	{
+		keyword  :"est",
+		balises : [
 			{
-				word : "test",
+				balise : "h1",
 				count : 1
 			}
 		]
 	},
-	h2 : {
+	{
 		//...
 	}
-};
+];

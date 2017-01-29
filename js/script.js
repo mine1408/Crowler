@@ -136,6 +136,7 @@ var crawlSite = function(index,site, callback){
 
 //function
 function deleteStopWords(strings){
+	// console.log(strings);
 	for (var j = 0; j < strings.length; j++) {
 		var stringToParse = (strings[j] || "").trim().toLowerCase();
 
@@ -147,9 +148,11 @@ function deleteStopWords(strings){
     for (var i = stopWords.length - 1; i >= 0; i--) {
 			if(stringToParse == stopWords[i].toLowerCase()){
 				strings.splice(j,1);
+				break;
 			}
     }
 	}
+	// console.log(strings);
 	return strings;
 }
 
@@ -192,58 +195,62 @@ function resetProgressBar(){
 }
 
 function filterData(data){
-	var result;
+	var result = [];
 
 	result = _.reduce(data,function(res, site){ //each sites
 		var balises = (site.balises || []);
 
 		for(var i = 0; i < balises.length; i++){ // each balises
 			var tag = balises[i].balise;
-			var base = {balise:tag,keywords:[]};
-			(res[tag] || (res[tag] = base))
-				.keywords = res[tag].keywords.concat(balises[i].words);
+
+			for (var j = 0; j < balises[i].words.length; j++) {
+				var word = balises[i].words[j];
+				res = addToKeywords(res,word,tag);
+			}
 		}
 
 		return res;
-	},{});
-	result = recountWords(result);
+	},[]);
+
 	console.log(result);
 	return result;
 }
 
 
-function recountWords(data){
-	var result = [];
-	for (var i = 0; i < tags.length; i++) {
-		var tag = tags[i];
-		var tagObject = {
-			balise : tag,
-			keywords : []
-		};
-		for (var j = 0; j < data[tag].keywords.length; j++) {
-			var keyword = data[tag].keywords[j];
-			addToKeywords(tagObject.keywords,keyword);
-		}
-		tagObject.keywords = _.sortBy(tagObject.keywords,function(value) {
-			return value.count;
-		});
-		tagObject.keywords.reverse();
-		result.push(tagObject);
-	}
-	return result;
-}
 
-
-function addToKeywords(array,keyword){
+function addToKeywords(array,elem,tag){
 	var done = false;
 	for (var i = 0; i < array.length; i++) {
-		var elem = array[i];
-		if(elem.word == keyword.word){
-			done = true;
-			elem.count += keyword.count	;
+		var word = array[i];
+		if(word.keyword == elem.word){
+			for (var j = 0; j < word.balises.length; j++) {
+				var tagObj = word.balises[j];
+				if(tagObj.balise == tag){
+					done = true;
+					tagObj.count += elem.count;
+				}
+			}
+			if(!done){
+				done = true;
+				word.balises.push({
+					balise : tag,
+					count : elem.count
+				})
+			}
 			break;
 		}
 	}
-	if(!done)	array.push(keyword);
+
+	if(!done){
+		array.push({
+			keyword : elem.word,
+			balises : [
+				{
+					balise : tag,
+					count : elem.count
+				}
+			]
+		})
+	}
 	return array;
 }
