@@ -254,3 +254,39 @@ function addToKeywords(array,elem,tag){
 	}
 	return array;
 }
+
+function findValuableKeywordsInDataset(dataset){
+	var countByKeywords = [];
+	var maxValue = 0;
+	//pour les keywords dan le dataset
+	for(var k1 = 0; k1 < dataset.length; k1++){
+		if(dataset[k1].keyword != ""){
+			var totalOccurrences = 0;
+			//pour les balises d'un keyword
+			for(var b = 0; b < dataset[k1].length; b++){
+				totalOccurrences = totalOccurrences + dataset[k1][b].count;
+			}
+			if(totalOccurrences > maxValue)
+				maxValue = totalOccurrences;
+			countByKeywords.push({index: k1, occurrences: totalOccurrences});
+		}
+	}
+
+	var valuableKeywordsTotalOccurences = $.grep(countByKeywords, function(value, index){
+		//On retourne l'ensemble des valeurs où les occurences sont > à 30% de la leur max
+		return value.occurrences > (maxValue/100)*30;
+	});
+
+	var valuablesKeywords = [];
+
+	for(var k2 =0; k2 < dataset.length; k2++){
+		for(var vk = 0; vk < valuableKeywordsTotalOccurences.length; vk++){
+			if(k2 == valuableKeywordsTotalOccurences[vk].index){
+				valuablesKeywords.push(dataset[k2]);
+				break;
+			}
+		}
+	}
+
+	return valuableKeywordsTotalOccurences;
+}
