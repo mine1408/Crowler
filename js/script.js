@@ -39,6 +39,22 @@ var showResult = function(){
 	addToProgressBar(100);
 	var sitesFiltered = filterData(sites);
 	sitesFiltered = findValuableKeywordsInDataset(sitesFiltered);
+
+	//Create bar chart
+	computeMorrisBarObjectFromValuableKeywords(sitesFiltered);
+
+	computeAverageDataTable(sitesFiltered);
+
+	computeWebSiteDataTable(0, sites[0]);
+	computeWebSiteDataTable(1, sites[1]);
+	computeWebSiteDataTable(3, sites[2]);
+	computeWebSiteDataTable(23, sites[23]);
+	computeWebSiteDataTable(24, sites[24]);
+	computeWebSiteDataTable(25, sites[25]);
+	computeWebSiteDataTable(47, sites[47]);
+	computeWebSiteDataTable(48, sites[48]);
+	computeWebSiteDataTable(49, sites[49]);
+
 	console.log(sitesFiltered);
 	$.ajax({
 		url : 'includes/saveSearch.php',
@@ -308,30 +324,128 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 		var dataToAdd = {};
 		dataToAdd.y = tags[b];
 		for(var k = 0; k < valuableKeywords.length; k++){
-			for(var kwb = 0; kwb < valuableKeywords[k].balises.length: kwb++){
-				if(valuableKeywords[k].balise == tags[b]){
+			for(var kwb = 0; kwb < valuableKeywords[k].balises.length; kwb++){
+				if(valuableKeywords[k].balise[kwb].balise == tags[b]){
 					dataToAdd[k] = valuableKeywords[k].count;
 					if(ykeys.indexOf(k) == -1){
 						ykeys.push(k)
 					}
 					if(labels.indexOf(valuableKeywords[k].keyword) != -1){
-						labels.push(valuableKeywords[k].keyword;
+						labels.push(valuableKeywords[k].keyword);
 					}
 					break;
 				}
 			}
-
-
 		}
-
 	}
 
-	return {
+	console.log(data);
+	console.log(ykeys);
+	console.log(labels);
+
+	Morris.Bar({
 		element:"bar",
 		barColors:["rgba(0,201,182, 0.8)","rgba(0,227,205, 0.8)","rgba(0,176,159, 0.8)","rgba(0,150,136, 0.8)","rgba(0,125,113, 0.8)","rgba(0,74,67, 0.8)","rgba(0,99,90, 0.8)"],
 		data: data,
 		xkey: 'y',
 		ykeys: ykeys,
 		labels: labels
-	};
+	});
+}
+
+function computeWebSiteDataTable(index, website){
+
+	console.log(website);
+
+	var data = [];
+
+	var allWords = [];
+	for(var b=0; b < website.balises.length; b++){
+		for(var w=0; website.balises[b].words.length; w++){
+			console.log((website.balises[b].words[w]));
+			if(website.balises[b].words[w] && allWords.indexOf(website.balises[b].words[w].word) == -1){
+				allWords.push(website.balises[b].words[w].word);
+			}
+		}
+	}
+console.log(allWords);
+	for(var aw= 0; aw < allWords.length; aw++){
+		var tempData = [];
+		tempData.push(allWords[aw]);
+		for(var b1=0; b1 < website.balises.length; b1++){
+			for(var w1=0; website.balises[b1].words.length; w1++){
+				if(website.balises[b1].words[w1].word.indexOf(allWords[aw]) == -1){
+					tempData.push(0);
+				}
+				if(allWords[aw] == website.balises[b1].words[w1].word){
+					tempData.push(website.balises[b1].words[w1].count);
+				}
+			}
+		}
+		data.push(tempData);
+	}
+
+	console.log(data);
+
+$("#website"+ index).text(index + " : <a href=\"" + website.url + "\">"+ website.url +"</a>");
+
+	$('#websitekeywords' + index).DataTable({
+		data: data,
+		columns: [
+			{ title: "Keywords" },
+			{ title: "h1" },
+			{ title: "h2" },
+			{ title: "h3" },
+			{ title: "h4" },
+			{ title: "Strong" },
+			{ title: "Page" }
+		],
+		paging: true,
+		searching: false,
+		lengthMenu: [3, 5, 10, 15],
+		pageLength: 3,
+		autoWidth: false
+	});
+}
+
+function computeAverageDataTable(valuableKeywords) {
+
+	var data = [];
+
+	//TODO
+	for(var vk = 0; vk < valuableKeywords.length; vk++){
+		var tempData = [];
+		tempData.push(valuableKeywords[vk].keyword);
+		for(var t = 0; t < tags.length; t++){
+			if(valuableKeywords[vk].balises[tags[t]]){
+				tempData.push(valuableKeywords[vk].balises[tags[t]].count);
+			}
+			if(allWords[aw] == website.balises[b1].words[w1].word){
+				tempData.push(website.balises[b1].words[w1].count);
+			}
+			for(var b =0; b < valuableKeywords.balises.length; b++){
+
+			}
+		}
+	}
+
+	console.log(data);
+
+	$('#average').DataTable({
+		data: data,
+		columns: [
+			{ title: "Keywords" },
+			{ title: "h1" },
+			{ title: "h2" },
+			{ title: "h3" },
+			{ title: "h4" },
+			{ title: "Strong" },
+			{ title: "Page" }
+		],
+		paging: true,
+		searching: false,
+		lengthMenu: [3, 5, 10, 15],
+		pageLength: 3,
+		autoWidth: false
+	});
 }
