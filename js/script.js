@@ -35,9 +35,10 @@ addToProgressBar(0);
 
 var showResult = function(){
 	$('#casperSuccess').text('Parsing finished');
-	console.log(sites);
+	// console.log(sites);
 	addToProgressBar(100);
 	var sitesFiltered = filterData(sites);
+	sitesFiltered = findValuableKeywordsInDataset(sitesFiltered);
 	console.log(sitesFiltered);
 	$.ajax({
 		url : 'includes/saveSearch.php',
@@ -46,7 +47,7 @@ var showResult = function(){
 			input : $('input[name=keywords]').val()},
 		success : function(data) {
 			$('#casperInfo').fadeIn();
-			$('#casperInfo').text('Search saved into ' + data.files);
+			$('#casperInfo').text('Search saved into ' + data.file);
 		}
 	})
 };
@@ -183,7 +184,6 @@ function addWords(array,word){
         })
 }
 
-
 function addToProgressBar(value){
 	progressBarWidth = progressBarWidth + value;
 	var newVal = progressBarWidth <= 100 ? progressBarWidth : 100;
@@ -212,11 +212,9 @@ function filterData(data){
 		return res;
 	},[]);
 
-	console.log(result);
+	// console.log(result);
 	return result;
 }
-
-
 
 function addToKeywords(array,elem,tag){
 	var done = false;
@@ -263,8 +261,8 @@ function findValuableKeywordsInDataset(dataset){
 		if(dataset[k1].keyword != ""){
 			var totalOccurrences = 0;
 			//pour les balises d'un keyword
-			for(var b = 0; b < dataset[k1].length; b++){
-				totalOccurrences = totalOccurrences + dataset[k1][b].count;
+			for(var b = 0; b < dataset[k1].balises.length; b++){
+				totalOccurrences = totalOccurrences + dataset[k1].balises[b].count;
 			}
 			if(totalOccurrences > maxValue)
 				maxValue = totalOccurrences;
@@ -272,10 +270,18 @@ function findValuableKeywordsInDataset(dataset){
 		}
 	}
 
-	var valuableKeywordsTotalOccurences = $.grep(countByKeywords, function(value, index){
-		//On retourne l'ensemble des valeurs où les occurences sont > à 30% de la leur max
-		return value.occurrences > (maxValue/100)*30;
+	var valuableKeywordsTotalOccurences = _.sortBy(countByKeywords, function(value){
+		return value.occurrences;
 	});
+
+	valuableKeywordsTotalOccurences.reverse();
+
+	valuableKeywordsTotalOccurences = valuableKeywordsTotalOccurences.slice(0,5);
+
+	// var valuableKeywordsTotalOccurences = $.grep(countByKeywords, function(value, index){
+	// 	//On retourne l'ensemble des valeurs où les occurences sont > à 30% de la leur max
+	// 	return value.occurrences > (maxValue/100)*10;
+	// });
 
 	var valuablesKeywords = [];
 
@@ -288,5 +294,5 @@ function findValuableKeywordsInDataset(dataset){
 		}
 	}
 
-	return valuableKeywordsTotalOccurences;
+	return valuablesKeywords;
 }
