@@ -395,18 +395,19 @@ console.log(allWords);
 
 	console.log(data);
 
-$("#website"+ index).text(index + " : <a href=\"" + website.url + "\">"+ website.url +"</a>");
+$("#website"+ index).text((index+1) + " : <a href=\"" + website.url + "\">"+ website.url +"</a>");
 
 	$('#websitekeywords' + index).DataTable({
 		data: data,
 		columns: [
 			{ title: "Keywords" },
-			{ title: "h1" },
-			{ title: "h2" },
-			{ title: "h3" },
-			{ title: "h4" },
-			{ title: "Strong" },
-			{ title: "Page" }
+			{ title: tags[0] },
+			{ title: tags[1] },
+			{ title: tags[2] },
+			{ title: tags[3] },
+			{ title: tags[4] },
+			{ title: tags[5] },
+			{ title: tags[6] }
 		],
 		paging: true,
 		searching: false,
@@ -424,17 +425,10 @@ function computeAverageDataTable(valuableKeywords) {
 	for(var vk = 0; vk < valuableKeywords.length; vk++){
 		var tempData = [];
 		tempData.push(valuableKeywords[vk].keyword);
-		for(var t = 0; t < tags.length; t++){
-			if(valuableKeywords[vk].balises[tags[t]]){
-				tempData.push(valuableKeywords[vk].balises[tags[t]].count);
-			}
-			if(allWords[aw] == website.balises[b1].words[w1].word){
-				tempData.push(website.balises[b1].words[w1].count);
-			}
-			for(var b =0; b < valuableKeywords.balises.length; b++){
-
-			}
+		for(var b = 0; b < valuableKeywords[vk].balises.length; b++){
+			tempData.push(valuableKeywords[vk].balises[b].count);
 		}
+		data.push(tempData);
 	}
 
 	console.log(data);
@@ -443,12 +437,13 @@ function computeAverageDataTable(valuableKeywords) {
 		data: data,
 		columns: [
 			{ title: "Keywords" },
-			{ title: "h1" },
-			{ title: "h2" },
-			{ title: "h3" },
-			{ title: "h4" },
-			{ title: "Strong" },
-			{ title: "Page" }
+			{ title: tags[0] },
+			{ title: tags[1] },
+			{ title: tags[2] },
+			{ title: tags[3] },
+			{ title: tags[4] },
+			{ title: tags[5] },
+			{ title: tags[6] }
 		],
 		paging: true,
 		searching: false,
