@@ -43,8 +43,8 @@ var showResult = function(){
 	$('#casperSuccess').text('Parsing finished');
 	// console.log(sites);
 	addToProgressBar(100);
-	var sitesFiltered = filterData(sites)
-	console.log(sitesFiltered);
+	var sitesFiltered = filterData(sites);
+	// console.log(sitesFiltered);
 	sitesFiltered = findValuableKeywordsInDataset(sitesFiltered);
 
 	//Create bar chart
@@ -98,13 +98,6 @@ var getUrls = function(callback){
 };
 
 var tags = ['h1','h2','h3','strong','title','meta[name=description]','meta[name=keywords]'];
-var tagsArray = [];
-for (var i = 0; i < tags.length; i++) {
-	tagsArray.push({
-		balise : tags[i],
-		count : 0
-	});
-}
 
 var crawlSite = function(index,site, callback){
     var tempSite = {}, tempBalise = {}, tempWords = {};
@@ -270,6 +263,13 @@ function addToKeywords(array,elem,tag){
 	}
 
 	if(!done){
+		var tagsArray = [];
+		for (var i = 0; i < tags.length; i++) {
+			tagsArray.push({
+				balise : tags[i],
+				count : 0
+			});
+		}
 		array.push({
 			keyword : elem.word,
 			balises : tagsArray
@@ -321,9 +321,6 @@ function findValuableKeywordsInDataset(dataset){
 
 function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 
-	console.log("Morris generation launched");
-
-
 	var data = [];
 	var ykeys = [];
 	var labels = [];
@@ -334,11 +331,11 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 		for(var k = 0; k < valuableKeywords.length; k++){
 			for(var kwb = 0; kwb < valuableKeywords[k].balises.length; kwb++){
 				if(valuableKeywords[k].balises[kwb].balise == tags[b]){
-                    dataToAdd[k] = valuableKeywords[k].balises[kwb].count;
+					dataToAdd[k] = valuableKeywords[k].balises[kwb].count;
 					if(ykeys.indexOf(k) == -1){
 						ykeys.push(k);
 					}
-					if(labels.indexOf(valuableKeywords[k].keyword) != -1){
+					if(labels.indexOf(valuableKeywords[k].keyword) == -1){
 						labels.push(valuableKeywords[k].keyword);
 					}
 					break;
@@ -348,9 +345,14 @@ function computeMorrisBarObjectFromValuableKeywords(valuableKeywords){
 		data.push(dataToAdd);
 	}
 
+	/*
+	console.log('data');
 	console.log(data);
+	console.log('ykeys');
 	console.log(ykeys);
+	console.log('labels');
 	console.log(labels);
+*/
 
 	Morris.Bar({
 		element:"bar",
