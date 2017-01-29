@@ -124,8 +124,7 @@ include("includes/manage.php");
                     <h1>Average on 50 websites</h1>
                 </div>
                 <div class="row">
-
-
+                    <table id="average" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
                 </div>
             </div>
 
