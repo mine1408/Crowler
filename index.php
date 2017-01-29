@@ -14,99 +14,6 @@ include("includes/classes/WebSite.php");
 
 include("includes/manage.php");
 
-$keywords = [
-    new Keyword(
-        "couteau",
-        new Body(
-            30.0,   //h1
-            30.0,   //h2
-            10.0,   //h3
-            40.0,   //h4
-            50.0,   //strong
-            10.0    //page
-        ),
-        new Header(
-            40.0,   //title
-            10.0    //metadescription
-        )
-    ),
-    new Keyword(
-        "cuisine",
-        new Body(
-            30.0,   //h1
-            40.0,   //h2
-            30.0,   //h3
-            30.0,   //h4
-            30.0,   //strong
-            30.0    //page
-        ),
-        new Header(
-            30.0,   //title
-            30.0    //metadescription
-        )
-    ),
-    new Keyword(
-        "matériel",
-        new Body(
-            10.0,   //h1
-            40.0,   //h2
-            30.0,   //h3
-            30.0,   //h4
-            30.0,   //strong
-            40.0    //page
-        ),
-        new Header(
-            30.0,   //title
-            20.0    //metadescription
-        )
-    ),
-    new Keyword(
-        "poël",
-        new Body(
-            30.0,   //h1
-            40.0,   //h2
-            0.0,   //h3
-            30.0,   //h4
-            0.0,   //strong
-            10.0    //page
-        ),
-        new Header(
-            15.0,   //title
-            5.0    //metadescription
-        )
-    )
-];
-
-$websites = [
-    new Website(
-        "http://cuisine.com",   //link
-        1,                  //rank
-        $keywords           //keywords
-    ),
-    new Website(
-        "http://materieldecuisine.fr",
-        2,
-        $keywords
-    ),
-    new Website(
-        "http://lesitedescuistos.be",
-        3,
-        $keywords
-    )
-];
-
-$result = new Result(
-    $keywords,
-    $websites
-);
-
-
-
-
-$colors = getColors();
-
-$balises = getBalises();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -141,34 +48,7 @@ $balises = getBalises();
 
 </head>
 <body>
-<script type="application/javascript">
-    jQuery( function ( $ ) {
-        "use strict";
-
-        Morris.Bar(
-            {
-                barColors: [<?php buildStringFromMultipleArray($colors); ?>],
-                element: "bar",
-                data: [<?php
-                    computeBarChart($balises, $keywords);
-                    $result = "";
-                    $keywordsCount = count($keywords);
-                    ?>],
-                xkey: 'y',
-                ykeys: [<?php
-                    $j = 0;
-                    while ($j < $keywordsCount) {
-                        if ($j !== 0)
-                            echo(",");
-                        echo("\"" . $j . "\"");
-                        $j++;
-                    }
-                    ?>],
-                labels: [<?php buildStringFromKeywords($keywords); ?>]
-            });
-    });
-
-
+<script >
 </script>
 <div class="sidebar-container">
     <div class="row" style="padding-top: 15px">
@@ -208,17 +88,6 @@ $balises = getBalises();
         </br>
 
         <div id="informationsFromCasper" class="row">
-            <!--<div id="spinner" align="center" style="padding-top: 10px; padding-bottom: 20px">
-                <div class="">
-                    <div class="sk-spinner sk-spinner-wave">
-                        <div class="sk-rect1"></div>
-                        <div class="sk-rect2"></div>
-                        <div class="sk-rect3"></div>
-                        <div class="sk-rect4"></div>
-                        <div class="sk-rect5"></div>
-                    </div>
-                </div>
-            </div>-->
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div id="casperSuccess" class="alert alert-success">
@@ -255,47 +124,7 @@ $balises = getBalises();
                     <h1>Average on 50 websites</h1>
                 </div>
                 <div class="row">
-                    <div class="col-md-12" style="padding-bottom: 20px; padding-top: 20px">
-                        <div class="col-md-2"></div>
 
-                        <div class="col-md-10">
-                            <?php
-                            $countkw = count($keywords);
-                            foreach ($keywords as $keyword){
-                                ?>
-                                <?php echo  "<div class=\"col-md-2\">" . $keyword->keywordName . "</div>" ?>
-
-                                <?php
-                            }
-                            ?>
-                        </div>
-                    </div>
-
-                    <?php
-
-                    foreach ($balises as $balise){
-                        $baliseString = (string)$balise;
-
-                        ?>
-                        <div class="col-md-12">
-                            <div class="col-md-2"><?php echo $balise ?></div>
-                            <div class="col-md-10">
-                                <?php
-
-                                foreach ($keywords as $keyword) {
-                                    if (property_exists("Header", $baliseString)) {
-                                        echo "<div class=\"col-md-2\">" . $keyword->header->{$baliseString} . "</div>";
-                                    } else if (property_exists("Body", $baliseString)) {
-                                        echo "<div class=\"col-md-2\">" . $keyword->body->{$baliseString} . "</div>";
-                                    } else
-                                        continue;
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <?php
-                    }
-                    ?>
 
                 </div>
             </div>
@@ -313,136 +142,110 @@ $balises = getBalises();
 
             <div class="col-md-4">
                 <h2 style="color:white">First results</h2>
-                <?php
-                $i = 0;
-                // for each element
-                foreach ($websites as $ws) {
 
-                    ?>
-                    <script>
-                        $(document).ready(function() {
-                            $('#example<?php echo $i; ?>').DataTable( {
-                                data:[<?php constructDataSet($ws, $balises); ?>],
-                                columns: [
-                                    { title: "Keywords" },
-                                    { title: "h1" },
-                                    { title: "h2" },
-                                    { title: "h3" },
-                                    { title: "h4" },
-                                    { title: "Strong" },
-                                    { title: "Page" }
-                                ],
-                                paging: true,
-                                searching: false,
-                                lengthMenu: [3, 5, 10, 15],
-                                pageLength: 3,
-                                autoWidth: false
-                            } );
-                        } );
-                    </script>
-                    <div class="ibox" style="margin-bottom: 10px">
-                        <div class="ibox-content ">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h3><?php echo $ws->rank ?> : <a href="<?php echo $ws->link ?>"><?php echo $ws->link ?></a></h3>
-                                    <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
-                                        <table id="example<?php echo $i;?>" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
-                                    </div>
+                <div class="ibox" style="margin-bottom: 10px">
+                    <div class="ibox-content ">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 id="website0"></h3>
+                                <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                    <table id="websitekeywords0" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
 
-                    <?php
-                    $i++;
-                }?>
+                    </div>
+                </div>
+
+
+                <div class="ibox" style="margin-bottom: 10px">
+                    <div class="ibox-content ">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 id="website1"></a></h3>
+                                <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                    <table id="websitekeywords1" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="ibox" style="margin-bottom: 10px">
+                    <div class="ibox-content ">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 id="website2"></h3>
+                                <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                    <table id="websitekeywords2" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-4">
                 <h2 align="center" style="color:white">Medium results</h2>
-                <?php
-                $i = 10;
-                // for each element
-                foreach ($websites as $ws) {
 
-                    ?>
-                    <script>
-                        $(document).ready(function() {
-                            $('#example<?php echo $i; ?>').DataTable( {
-                                data:[<?php constructDataSet($ws, $balises); ?>],
-                                columns: [
-                                    { title: "Keywords" },
-                                    { title: "h1" },
-                                    { title: "h2" },
-                                    { title: "h3" },
-                                    { title: "h4" },
-                                    { title: "Strong" },
-                                    { title: "Page" }
-                                ],
-                                paging: true,
-                                searching: false,
-                                lengthMenu: [3, 5, 10, 15],
-                                pageLength: 3,
-                                autoWidth: false
-                            } );
-                        } );
-                    </script>
-                    <div class="ibox" style="margin-bottom: 10px">
-                        <div class="ibox-content ">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h3><?php echo ($ws->rank + 23) ?> : <a href="<?php echo $ws->link ?>"><?php echo $ws->link ?></a></h3>
-                                    <div class=" form-inline dt-bootstrap">
-                                        <table id="example<?php echo $i;?>" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
-                                    </div>
+                <div class="ibox" style="margin-bottom: 10px">
+                    <div class="ibox-content ">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 id="website23"></h3>
+                                <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                    <table id="websitekeywords23" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
 
-                    <?php
-                    $i++;
-                }?>
+                    </div>
+                </div>
+
+
+                <div class="ibox" style="margin-bottom: 10px">
+                    <div class="ibox-content ">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 id="website24"></a></h3>
+                                <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                    <table id="websitekeywords24" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="ibox" style="margin-bottom: 10px">
+                    <div class="ibox-content ">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 id="website25"></h3>
+                                <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                    <table id="websitekeywords25" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-4">
                 <h2 align="right" style="color:white">Last results</h2>
-                <?php
-                $i = 20;
-                // for each element
-                foreach ($websites as $ws) {
 
-                    ?>
-                    <script>
-                        $(document).ready(function() {
-                            $('#example<?php echo $i; ?>').DataTable( {
-                                data:[<?php constructDataSet($ws, $balises); ?>],
-                                columns: [
-                                    { title: "Keywords" },
-                                    { title: "h1" },
-                                    { title: "h2" },
-                                    { title: "h3" },
-                                    { title: "h4" },
-                                    { title: "Strong" },
-                                    { title: "Page" }
-                                ],
-                                paging: true,
-                                searching: false,
-                                lengthMenu: [3, 5, 10, 15],
-                                pageLength: 3,
-                                autoWidth: false
-                            } );
-                        } );
-                    </script>
                     <div class="ibox" style="margin-bottom: 10px">
                         <div class="ibox-content ">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h3><?php echo ($ws->rank + 47)?> : <a href="<?php echo $ws->link ?>"><?php echo $ws->link ?></a></h3>
+                                    <h3 id="website47"></h3>
                                     <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
-                                        <table id="example<?php echo $i;?>" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                        <table id="websitekeywords47" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
                                     </div>
                                 </div>
                             </div>
@@ -450,9 +253,36 @@ $balises = getBalises();
                         </div>
                     </div>
 
-                    <?php
-                    $i++;
-                }?>
+
+                    <div class="ibox" style="margin-bottom: 10px">
+                        <div class="ibox-content ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 id="website48"></a></h3>
+                                    <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                        <table id="websitekeywords48" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="ibox" style="margin-bottom: 10px">
+                        <div class="ibox-content ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 id="website49"></h3>
+                                    <div class=" form-inline dt-bootstrap " style="padding-top: 0px !important">
+                                        <table id="websitekeywords40" role="grid" class="display" width="100%" style="padding-top: 0px !important"></table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
             </div>
 
         </div>
